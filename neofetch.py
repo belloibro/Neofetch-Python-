@@ -27,7 +27,7 @@ def show_fetch():
     # Battery Info
     battery_status = "N/A"
     try:
-        out = subprocess.check_output(["termux-battery-status"]).decode('utf-8')
+        out = subprocess.check_output(["termux-battery-status"], timeout=3).decode('utf-8')
         bdata = json.loads(out)
         battery_status = f"{bdata.get('percentage')}% ({bdata.get('status')})"
     except Exception:
