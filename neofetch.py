@@ -14,6 +14,14 @@ def show_fetch():
     except Exception:
         pass
 
+    storage_total, storage_free = "N/A", "N/A"
+    try:
+        st = os.statvfs('/data/data/com.termux/files/home')
+        storage_total = f"{(st.f_blocks * st.f_frsize) // (1024**3)}GB"
+        storage_free = f"{(st.f_bavail * st.f_frsize) // (1024**3)}GB"
+    except Exception:
+        pass
+
     print("\033[1;34m" + r"""
   _____                          _ 
  |_   _|__ _ __ _ __ ___  _   _| |
@@ -25,8 +33,8 @@ def show_fetch():
     print(f"\033[1;32mOS:\033[0m {uname.system} {uname.release}")
     print(f"\033[1;32mNode:\033[0m {uname.node}")
     print(f"\033[1;32mArch:\033[0m {uname.machine}")
-    print(f"\033[1;32mMemory Total:\033[0m {mem_total}")
-    print(f"\033[1;32mMemory Available:\033[0m {mem_free}")
+    print(f"\033[1;32mRAM Total / Free:\033[0m {mem_total} / {mem_free}")
+    print(f"\033[1;32mStorage Total / Free:\033[0m {storage_total} / {storage_free}")
 
 if __name__ == "__main__":
     show_fetch()
