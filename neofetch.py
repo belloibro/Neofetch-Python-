@@ -1,8 +1,9 @@
-import platform, os
+import platform, os, subprocess, json
 
 def show_fetch():
     uname = platform.uname()
 
+    # RAM Info
     mem_total, mem_free = "N/A", "N/A"
     try:
         with open('/proc/meminfo', 'r') as f:
@@ -14,11 +15,21 @@ def show_fetch():
     except Exception:
         pass
 
+    # Storage Info
     storage_total, storage_free = "N/A", "N/A"
     try:
         st = os.statvfs('/data/data/com.termux/files/home')
         storage_total = f"{(st.f_blocks * st.f_frsize) // (1024**3)}GB"
         storage_free = f"{(st.f_bavail * st.f_frsize) // (1024**3)}GB"
+    except Exception:
+        pass
+
+    # Battery Info
+    battery_status = "N/A"
+    try:
+        out = subprocess.check_output(["termux-battery-status"]).decode('utf-8')
+        bdata = json.loads(out)
+        battery_status = f"{bdata.get('percentage')}% ({bdata.get('status')})"
     except Exception:
         pass
 
@@ -35,6 +46,8 @@ def show_fetch():
     print(f"\033[1;32mArch:\033[0m {uname.machine}")
     print(f"\033[1;32mRAM Total / Free:\033[0m {mem_total} / {mem_free}")
     print(f"\033[1;32mStorage Total / Free:\033[0m {storage_total} / {storage_free}")
+    if battery_status != "N/A":
+        print(f"\033[1;32mBattery:\033[0m {battery_status}")
 
 if __name__ == "__main__":
     show_fetch()
