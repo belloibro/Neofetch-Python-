@@ -1,0 +1,12 @@
+{
+    "timestamp": "2026-08-13 04:00:00.439428",
+    "target": "127.0.0.1",
+    "total_open": 1,
+    "results": [
+        {
+            "port": 8080,
+            "status": "OPEN",
+            "service_info": "HTTP/1.0 200 OK\r"
+        }
+    ]
+}
